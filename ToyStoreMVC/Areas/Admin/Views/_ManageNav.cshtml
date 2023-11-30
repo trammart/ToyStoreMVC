@@ -1,0 +1,113 @@
+﻿@using ToyStoreMVC.Areas.Admin.Views;
+@using ToyStoreMVC.Models;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center"
+       asp-action="Index" asp-controller="Home" asp-area="">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-paw"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Teddy Store</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.BrandNavClass(ViewContext)" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <!-- Heading -->
+    <div class="sidebar-heading mt-2">
+        Điều phối kho hàng
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-box-open"></i>
+            <span>Quản lý kho hàng</span>
+        </a>
+        <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @ManageNavPages.BrandNavClass(ViewContext)" asp-area="Admin" asp-controller="Brand" asp-action="Index">Quản lý thương hiệu</a>
+                <a class="collapse-item @ManageNavPages.CategoryNavClass(ViewContext)" asp-area="Admin" asp-controller="Category" asp-action="Index">Quản lý phân loại</a>
+                <a class="collapse-item @ManageNavPages.ProductNavClass(ViewContext)" asp-area="Admin" asp-controller="Product" asp-action="Index">Quản lý sản phẩm</a>
+            </div>
+        </div>
+    </li>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Quản lý đơn hàng</span>
+        </a>
+        <div id="collapseOrder" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-route-status="pending" asp-area="Admin" asp-controller="Order" asp-action="index"> Đơn chưa xử lý</a>
+                <a class="collapse-item" asp-route-status="inprocess" asp-area="Admin" asp-controller="Order" asp-action="index"> Đang chờ</a>
+                <a class="collapse-item" asp-route-status="completed" asp-area="Admin" asp-controller="Order" asp-action="index"> Đã hoàn thành</a>
+                <a class="collapse-item" asp-route-status="rejected" asp-area="Admin" asp-controller="Order" asp-action="index"> Đã hủy</a>
+                <a class="collapse-item" asp-route-status="all" asp-area="Admin" asp-controller="Order" asp-action="index"> Tất cả</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Heading -->
+    <div class="sidebar-heading mt-2">
+        Quản lý người dùng
+    </div>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-user-cog"></i>
+            <span>Tài khoản người dùng</span>
+        </a>
+        <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @ManageNavPages.UserNavClass(ViewContext)" asp-area="Admin" asp-controller="User" asp-action="Index">Khách hàng</a>
+                <a class="collapse-item @ManageNavPages.CompanyNavClass(ViewContext)" asp-area="Admin" asp-controller="Company" asp-action="Index">Nhà bán hàng</a>
+            </div>
+        </div>
+    </li>
+
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Heading -->
+    <div class="sidebar-heading mt-2">
+        Phân quyền hệ thống
+    </div>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRole" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Quản lý vai trò</span>
+        </a>
+        <div id="collapseRole" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item @ManageNavPages.RoleNavClass(ViewContext)" asp-area="Admin" asp-controller="Role" asp-action="Index">Danh sách các vai trò</a>
+                <a class="collapse-item @ManageNavPages.RoleNavClass(ViewContext)" asp-area="Admin" asp-controller="Role" asp-action="Add">Tạo mới vai trò</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>
+<!-- End of Sidebar -->

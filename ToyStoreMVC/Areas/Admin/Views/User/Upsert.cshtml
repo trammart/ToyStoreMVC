@@ -1,0 +1,65 @@
+﻿@model ToyStoreMVC.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Phân quyền người dùng";
+    Layout = "_Layout.cshtml";
+    ViewData["ActivePage"] = ManageNavPages.User;
+}
+
+<form method="post">
+    <div class="row p-3 border">
+        <div class="col-8 pt-4">
+            <div class="form-group row mb-2">
+                <div class="col-4">
+                    <label asp-for="Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-4">
+                    <label asp-for="Role"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Role" asp-items="ViewBag.Roles" class="form-control"></select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    <button type="button" class="btn btn-primary" onclick="saveRoleChanges()">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <script>
+        function saveRoleChanges() {
+            var userId = '@Model.Id';
+            var roleName = $('#Role').val();
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/User/UpdateUserRole',
+                data: { userId: userId, roleName: roleName },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    toastr.error('Có lỗi xảy ra khi cập nhật vai trò!');
+                }
+            });
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
+

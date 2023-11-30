@@ -1,0 +1,316 @@
+﻿@model IEnumerable<ToyStoreMVC.Models.Product>
+@{
+	ViewData["Title"] = "Trang chủ";
+}
+
+<!-- ========================= SECTION MAIN  ========================= -->
+<section class="section-main padding-y">
+	<main>
+
+		<div class="col-12">
+
+			<!-- ================== COMPONENT SLIDER  BOOTSTRAP  ==================  -->
+			<div class="container my-2 wow fadeIn" data-wow-delay="0.1s">
+				<div class="row">
+					<div class="col-lg-8">
+						<div id="header-carousel" class="carousel slide mb-30 mb-lg-0" data-ride="carousel">
+							<div class="carousel-inner">
+								<div class="carousel-item position-relative active" data-bs-interval="3000" style="height: 390px;">
+									<img class="position-absolute w-100 h-100" src="~/assets/img/carousel-1.jpg" style="object-fit: cover;">
+								</div>
+								<div class="carousel-item position-relative" data-bs-interval="5000" style="height: 390px;">
+									<img class="position-absolute w-100 h-100" src="~/assets/img/carousel-2.jpg" style="object-fit: cover;">
+								</div>
+								<div class="carousel-item position-relative" data-bs-interval="5000" style="height: 390px;">
+									<img class="position-absolute w-100 h-100" src="~/assets/img/carousel-3.jpg" style="object-fit: cover;">
+								</div>
+							</div>
+							<button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="product-offer mb-30" style="height: 200px;">
+							<img class="img-fluid" src="~/assets/img/offer-1.jpg" alt="">
+						</div>
+						<div class="product-offer mb-30" style="height: 200px;">
+							<img class="img-fluid" src="~/assets/img/offer-2.jpg" alt="">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ==================  COMPONENT SLIDER BOOTSTRAP end.// ==================  .// -->
+		</div> <!-- col.// -->
+	</main>
+
+</section>
+<!-- ========================= SECTION MAIN END// ========================= -->
+<section class="row py-3">
+	<div class="col-lg-3 text-center">
+		<img class="d-block mx-auto" src="~/assets/img/giaohang.png" height="80px" />
+		<strong class="d-block">GIAO HÀNG TẬN NHÀ</strong>
+	</div>
+	<div class="col-lg-3 text-center">
+		<img class="d-block mx-auto" src="~/assets/img/goihang.png" height="80px" />
+		<strong class="d-block">GÓI QUÀ MIỄN PHÍ</strong>
+	</div>
+	<div class="col-lg-3 text-center">
+		<img class="d-block mx-auto" src="~/assets/img/giatgau.png" height="80px" />
+		<strong class="d-block">DỊCH VỤ GIẶT GẤU</strong>
+	</div>
+	<div class="col-lg-3 text-center">
+		<img class="d-block mx-auto" src="~/assets/img/baohanh.png" height="80px" />
+		<strong class="d-block">BẢO HÀNH GẤU BÔNG</strong>
+	</div>
+</section>
+<!-- =============== SECTION 1 =============== -->
+<section class="pt-3">
+	<div class="container">
+		<div class="row h-100">
+			<div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+				<h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Mèo Bông Cao Cấp</h4>
+			</div>
+			<div class="col-12">
+				<div class="carousel slide" id="carouselPopularItems" data-bs-touch="false" data-bs-interval="false">
+					<div class="carousel-inner">
+						<div class="carousel-item active" data-bs-interval="10000">
+							<div class="row gx-3 h-100 align-items-center">
+								@{
+									int c = 0;
+								}
+								@foreach (var product in Model)
+								{
+									if (@product.Category.Name.Contains("Mèo bông"))
+									{
+										var pr = @product.Price - (@product.Price * @product.Discount / 100);
+										c += 1;
+										<div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
+											@if (product.Discount > 0)
+											{
+												<div class="badge-img position-absolute text-uppercase text-white">
+													<span class="badge-sale">@product.Discount%</span>
+												</div>
+											}
+											<div class="card card-span h-100 rounded-3">
+												<a asp-action="Details" asp-route-id="@product.Id"><img class="img-fluid rounded-3 h-100" src="@product.ImageUrl" /></a>
+												<div class="card-body">
+													<a asp-action="Details" asp-route-id="@product.Id" class="text-1000 mb-1">@product.Name</a>
+													<div class="row">
+														<h5 class="text-info col-7 pe-2">@pr.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) </h5>
+														@if (product.Discount > 0)
+														{
+															<h6 class="text-decoration-line-through col-5 p-0">@product.Price.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</h6>
+														}
+													</div>
+													
+													<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius">Chi tiết</a>
+
+												</div>
+											</div>
+										</div>
+									}
+									if (c == 5)
+									{
+										break;
+									}
+								}
+							</div>
+						</div>
+						<div class="carousel-item" data-bs-interval="5000">
+							<div class="row gx-3 h-100 align-items-center">
+								@{
+									int a = 0;
+									var previousProducts = Model.Where(p => p.Category.Name.Contains("Mèo bông")).Take(5).ToList();
+								}
+								@foreach (var product in Model)
+								{
+									if (@product.Category.Name.Contains("Mèo bông") && !previousProducts.Contains(product))
+									{
+										var pr = @product.Price - (@product.Price * @product.Discount / 100);
+										a += 1;
+										<div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
+											@if (product.Discount > 0)
+											{
+												<div class="badge-img position-absolute text-uppercase text-white">
+													<span class="badge-sale">@product.Discount%</span>
+												</div>
+											}
+											<div class="card card-span h-100 rounded-3">
+												<a asp-action="Details" asp-route-id="@product.Id"><img class="img-fluid rounded-3 h-100" src="@product.ImageUrl" /></a>
+												<div class="card-body">
+													<a asp-action="Details" asp-route-id="@product.Id" class="text-1000 mb-1">@product.Name</a>
+													<div class="row">
+														<h5 class="text-info col-7 pe-2">@pr.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) </h5>
+														@if (product.Discount > 0)
+														{
+															<h6 class="text-decoration-line-through col-5 p-0">@product.Price.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</h6>
+														}
+													</div>
+
+													<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius">Chi tiết</a>
+
+												</div>
+											</div>
+										</div>
+									}
+									if (a == 5)
+									{
+										break;
+									}
+								}
+							</div>
+						</div>
+					</div>
+					<button class="carousel-control-prev-custom carousel-icon-custom" type="button" data-bs-target="#carouselPopularItems" data-bs-slide="prev">
+						<span class="carousel-control-prev-custom-icon hover-top-shadow" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+
+					<button class="carousel-control-next-custom carousel-icon-custom" type="button" data-bs-target="#carouselPopularItems" data-bs-slide="next">
+						<span class="carousel-control-next-custom-icon hover-top-shadow" aria-hidden="true"></span>
+						<span class="visually-hidden">Next </span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div> 
+</section>
+<!-- =============== SECTION 1 END =============== -->
+<!-- =============== SECTION 2 =============== -->
+<section class="pt-3">
+	<div class="container">
+		<div class="row h-100">
+			<div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+				<h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Gà Bông Cao Cấp</h4>
+			</div>
+			<div class="col-12">
+				<div class="carousel slide" id="carouselGaItems" data-bs-touch="false" data-bs-interval="false">
+					<div class="carousel-inner">
+						<div class="carousel-item active" data-bs-interval="10000">
+							<div class="row gx-3 h-100 align-items-center">
+								@{
+									int b = 0;
+								}
+								@foreach (var product in Model)
+								{
+									if (@product.Category.Name.Contains("Gà bông"))
+									{
+										var pr = @product.Price - (@product.Price * @product.Discount / 100);
+										b += 1;
+										<div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
+											@if (product.Discount > 0)
+											{
+												<div class="badge-img position-absolute text-uppercase text-white">
+													<span class="badge-sale">@product.Discount%</span>
+												</div> 
+											}
+											<div class="card card-span h-100 rounded-3">
+												<a asp-action="Details" asp-route-id="@product.Id"><img class="img-fluid rounded-3 h-100" src="@product.ImageUrl" /></a>
+												<div class="card-body">
+													<a asp-action="Details" asp-route-id="@product.Id" class="text-1000 mb-1">@product.Name</a>
+													<div class="row">
+														<h5 class="text-info col-7 pe-2">@pr.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) </h5>
+														@if (product.Discount > 0)
+														{
+															<h6 class="text-decoration-line-through col-5 p-0">@product.Price.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</h6>
+														}
+													</div>
+
+													<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius">Chi tiết</a>
+
+												</div>
+											</div>
+										</div>
+									}
+									if (b == 5)
+									{
+										break;
+									}
+								}
+							</div>
+						</div>
+						<div class="carousel-item" data-bs-interval="5000">
+							<div class="row gx-3 h-100 align-items-center">
+								@{
+									int d = 0;
+									var previousGa = Model.Where(p => p.Category.Name.Contains("Gà bông")).Take(5).ToList();
+								}
+								@foreach (var product in Model)
+								{
+									if (@product.Category.Name.Contains("Mèo bông") && !previousGa.Contains(product))
+									{
+										var pr = @product.Price - (@product.Price * @product.Discount / 100);
+										d += 1;
+										<div class="col-sm-6 col-md-4 col-xl mb-5 h-100">
+											@if (product.Discount > 0)
+											{
+												<div class="badge-img position-absolute text-uppercase text-white">
+													<span class="badge-sale">@product.Discount%</span>
+												</div>
+											}
+											<div class="card card-span h-100 rounded-3">
+												<a asp-action="Details" asp-route-id="@product.Id"><img class="img-fluid rounded-3 h-100" src="@product.ImageUrl" /></a>
+												<div class="card-body">
+													<a asp-action="Details" asp-route-id="@product.Id" class="text-1000 mb-1">@product.Name</a>
+													<div class="row">
+														<h5 class="text-info col-7 pe-2">@pr.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) </h5>
+														@if (product.Discount > 0)
+														{
+															<h6 class="text-decoration-line-through col-5 p-0">@product.Price.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</h6>
+														}
+													</div>
+
+													<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary text-white px-4 py-2 my-2 btn-border-radius">Chi tiết</a>
+
+												</div>
+											</div>
+										</div>
+									}
+									if (d == 5)
+									{
+										break;
+									}
+								}
+							</div>
+						</div>
+					</div>
+					<button class="carousel-control-prev-custom carousel-icon-custom" type="button" data-bs-target="#carouselGaItems" data-bs-slide="prev">
+						<span class="carousel-control-prev-custom-icon hover-top-shadow" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+
+					<button class="carousel-control-next-custom carousel-icon-custom" type="button" data-bs-target="#carouselGaItems" data-bs-slide="next">
+						<span class="carousel-control-next-custom-icon hover-top-shadow" aria-hidden="true"></span>
+						<span class="visually-hidden">Next </span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- =============== SECTION 2 END =============== -->
+<!-- =============== SECTION ITEMS =============== -->
+<section class="padding-bottom-sm container">
+	<div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+		<h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">Khuyến Mãi Đặc Biệt</h4>
+	</div>
+	<div class="row row-sm" id="tblData">
+	</div> <!-- row.// -->
+</section>
+<!-- =============== SECTION ITEMS .//END =============== -->
+<!--Pagination-->
+<div class="container">
+	<nav aria-label="Page navigation sample" class="m-auto" id="paged">
+
+	</nav>
+</div>
+
+@section Scripts {
+	<script src="~/js/pagination_home.js"></script>
+}

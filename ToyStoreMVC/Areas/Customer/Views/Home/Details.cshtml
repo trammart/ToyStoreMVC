@@ -1,0 +1,65 @@
+﻿@model ToyStoreMVC.Models.ShoppingCart
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var pr = @Model.Product.Price - (@Model.Product.Price * @Model.Product.Discount / 100);
+}
+
+<form method="post">
+    <input hidden asp-for="ProductId" />
+    <div class="container backgroundWhite pt-4">
+        <div class="card">
+            <div class="card-header bg-light text-light ms-0 row container">
+                <div class="col-12 col-md-9">
+                    <h1 class="text-primary">@Model.Product.Name</h1>
+                    <p class="text-warning">by @Model.Product.Brand.Name</p>
+                </div>
+                <div class="col-12 col-md-3 text-md-right pt-4">
+                    <span class="badge bg-success pt-2 text-white" style="height:30px;">@Model.Product.Brand.Name</span>
+                    <span class="badge bg-primary pt-2 text-white" style="height:30px;">@Model.Product.Category.Name</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-4 text-center">
+                            <img src="@Model.Product.ImageUrl" width="100%" class="rounded" />
+                        </div>
+                        <div class="col-8 col-lg-8">
+                            <div class="row pl-2">
+                                <h5 class="text-muted">Số lượng còn : @Model.Product.Quantity</h5>
+                            </div>
+                            <div class="row pl-2">
+                                <h3 class="text-danger p-2 col-3">@pr.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) </h3>
+                                <h6 class="text-decoration-line-through col pt-3">@Model.Product.Price.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</h6>
+                            </div>
+
+                            <div class="row pl-2">
+                                <p class="text-secondary">@Html.Raw(Model.Product.Discription)</p>
+                            </div>
+                            <div class="row pl-2">
+                                <div class="col-4 text-primary"><h4>Chọn số lượng</h4></div>
+                                <div class="col-8"><input type="number" max="@Model.Product.Quantity" min="0" class="form-control" asp-for="Count" value="1" /></div>
+                                <span asp-validation-for="Count" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row justify-content-between">
+                    <div class="col-12 col-md-4 ps-5 ms-5 pb-1">
+                        <a asp-area="Customer" asp-controller="Category" asp-action="index" asp-route-categoryId="@Model.Product.CategoryId" asp-controller="Catetory" class="btn btn-info text-white" style="height:40px; width:200px">Sản phẩm cùng loại</a>
+                    </div>
+                    <div class="col-12 col-md-6 pb-1">
+                        <button type="submit" value="Add to Cart" class="btn btn-primary" style="height:40px; width:330px">Thêm vào giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

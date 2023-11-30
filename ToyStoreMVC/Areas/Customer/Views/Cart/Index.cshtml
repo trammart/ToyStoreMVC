@@ -1,0 +1,113 @@
+﻿@model ToyStoreMVC.Models.ViewModels.ShoppingCartVM
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    <br />
+    @if (Model.ListCart.Count() > 0)
+    {
+
+        <div class="backgroundWhiteBorder">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header d-flex bg-dark text-light ml-0 justify-content-between container">
+                        <div class="col-6">
+                            <i class="fa fa-shopping-cart"></i> &nbsp;
+                            Giỏ Hàng
+                        </div>
+                        <div class="text-right">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-sm">Tiếp tục mua sắm</a>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        @foreach (var item in Model.ListCart)
+                        {
+                            <div class="row">
+                                <div class="d-none d-lg-block col-lg-2 text-center py-2">
+                                    <img src="@item.Product.ImageUrl" class="rounded" width="70%" />
+                                </div>
+                                <div class="col-12 text-sm-center pt-4 col-lg-4 text-lg-left">
+                                    <h5><strong>@item.Product.Name</strong></h5>
+                                    <p><small>@Html.Raw(item.Product.Discription)</small></p>
+                                </div>
+                                <div class="col-12 text-sm-center align-content-center col-lg-6 text-lg-right row">
+                                    <div class="col-4 text-md-left" style="padding-top:5px;">
+                                        <h5><strong>@item.Price.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</strong></h5>
+                                    </div>
+                                    <div class="col-2 col-sm-4 col-lg-5">
+                                        <div class="row">
+                                            <div class="float-lg-left mx-1 col-3">
+                                                <a asp-action="minus" asp-route-cartId="@item.Id" class="btn btn-danger">
+                                                    <i class="fas fa-minus"></i>
+                                                </a>
+                                            </div>
+                                            <h5 class="col-1 text-center mt-2"> @item.Count</h5>
+                                            <div class="float-lg-left mx-1 col-3">
+                                                <a asp-action="plus" asp-route-cartId="@item.Id" class="btn btn-primary">
+                                                    <i class="fas fa-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 col-sm-4 col-lg-3 ps-4 text-right">
+                                        <a asp-action="remove" asp-route-cartId="@item.Id" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <span class="text-info"> Tổng (VNĐ)</span>
+                                        <strong class="text-info h5 mb-0"><span id="txtOrderTotal">@Model.OrderHeader.OrderTotal.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))</span></strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="card-footer row px-0">
+                            @if (!Model.OrderHeader.ApplicationUser.EmailConfirmed
+                           && Model.OrderHeader.ApplicationUser.CompanyId != null
+                           && Model.OrderHeader.ApplicationUser.Company.IsAuthorizedCompany)
+                            {
+                                <div class="col-8 text-danger">
+                                    Email Phải được xác nhận cho khách hàng được ủy quyền!
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" class="btn btn-outline-warning btn-sm">
+                                        Nhấn vào đây để gửi lại Email xác nhận!
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 pr-4 offset-md-6 ">
+
+                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Summary" class="btn btn-success w-100">Xác nhận giỏ hàng</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container py-5 text-center">
+            <img src="https://cdn1.concung.com/themes/desktop4.1/image/v40/bg/cart-empty.png" class="img-fluid" alt="">
+            <h5>Hiện chưa có sản phẩm nào trong giỏ hàng của bạn!</h5>
+        </div>
+    }
+</form>

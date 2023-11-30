@@ -1,0 +1,26 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Views/Shared/Admin/_Layout.cshtml";
+    }
+
+}
+
+
+@RenderBody()
+
+@section TopBar {
+    @await Html.PartialAsync("/Views/Shared/Admin/_TopBar.cshtml")
+}
+
+@section SideBar {
+    <partial name="/Areas/Admin/Views/_ManageNav.cshtml" />
+}
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

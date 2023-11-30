@@ -1,0 +1,298 @@
+﻿@using ToyStoreMVC.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>@ViewData["Title"] - Teddy Store</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+
+	<!-- Google Web Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+
+	<!-- Icon Font Stylesheet -->
+	<link rel="shortcut icon" type="image/x-icon" href="https://teddy.vn/wp-content/uploads/2022/08/Teddy-2022.png" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+	<!-- Libraries Stylesheet -->
+	<link href="~/assets/animate/animate.min.css" rel="stylesheet">
+	<link href="~/assets/lightbox/css/lightbox.min.css" rel="stylesheet">
+	<link href="~/assets/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+	<!-- Customized Bootstrap Stylesheet -->
+	<link href="~/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Template Stylesheet -->
+	<link href="~/css/style.css" rel="stylesheet">
+</head>
+<body>
+	<!-- Spinner Start -->
+	@*@<div id="spinner" role="status" class="wheel-and-hamster show position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+	<div class="wheel"></div>
+	<div class="hamster">
+	<div class="hamster__body">
+	<div class="hamster__head">
+	<div class="hamster__ear"></div>
+	<div class="hamster__eye"></div>
+	<div class="hamster__nose"></div>
+	</div>
+	<div class="hamster__limb hamster__limb--fr"></div>
+	<div class="hamster__limb hamster__limb--fl"></div>
+	<div class="hamster__limb hamster__limb--br"></div>
+	<div class="hamster__limb hamster__limb--bl"></div>
+	<div class="hamster__tail"></div>
+	</div>
+	</div>
+	<div class="spoke"></div>
+	</div>*@
+	<!-- Spinner End -->
+	<header>
+		<!-- Navbar start -->
+		<div class="container-fluid border-bottom bg-light wow" data-wow-delay="0.1s">
+			<div class="container topbar bg-primary d-none d-lg-block py-2" style="border-radius: 0 40px">
+				<div class="d-flex justify-content-between">
+					<div class="top-info ps-2">
+						<div class="d-flex me-4">
+							<div id="phone-tada" class="d-flex align-items-center justify-content-center">
+								<a href="" class="position-relative wow tada" data-wow-delay=".9s">
+									<i class="fa fa-phone-alt text-white fa-2x me-4"></i>
+									<div class="position-absolute" style="top: -7px; left: 20px;">
+										<span><i class="fa fa-comment-dots text-white"></i></span>
+									</div>
+								</a>
+							</div>
+							<div class="d-flex flex-column pe-3">
+								<a href="#"><span class="text-white">Free: + 0123 456 7890</span></a>
+							</div>
+						</div>
+					</div>
+
+					<div class="top-link pe-2">
+						<a href="" class="btn btn-light btn-sm-square rounded-circle"><i class="fab fa-facebook-f text-secondary"></i></a>
+						<a href="" class="btn btn-light btn-sm-square rounded-circle"><i class="fab fa-twitter text-secondary"></i></a>
+						<a href="" class="btn btn-light btn-sm-square rounded-circle"><i class="fab fa-instagram text-secondary"></i></a>
+						<a href="" class="btn btn-light btn-sm-square rounded-circle me-0"><i class="fab fa-linkedin-in text-secondary"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="container px-0">
+				<nav class="navbar navbar-light navbar-expand-xl pb-1 pt-2 justify-content-between">
+					<a class="navbar-brand col-lg-2" asp-area="Customer" asp-controller="Home" asp-action="Index"><h1 class="text-primary display-6">Teddy<span class="text-secondary">Store</span></h1></a>
+					@* <div class="col-lg-4 col-6 text-left">
+						<form action="">
+							<div class="input-group d-flex">
+								<input type="search" class="form-control" placeholder="Tìm Kiếm">
+								<button class="input-group-text btn btn-primary"><i class="fa fa-search"></i></button>
+							</div>
+						</form>
+					</div> *@
+					@await Component.InvokeAsync("Search")
+					<div class="d-flex justify-content-between">
+						@* <!-- Wishlist -->
+						<div class="px-4 pb-1 align-self-end">
+							<i class="far fa-heart position-relative fs-3"></i>
+							<div class="position-absolute translate-middle badge rounded-pill bg-danger">2</div>
+						</div>
+						<!-- /Wishlist -->
+						<!-- Cart -->
+						<div class="ps-4 pe-5 pb-1 align-self-end">
+							<i class="fa fa-shopping-cart position-relative fs-3"></i>
+							<div class="position-absolute translate-middle badge rounded-pill bg-danger">2</div>
+						</div>
+						<!-- Cart --> *@
+						@if (User.IsInRole(SD.Role_Admin))
+						{
+							<div class="widget-header me-3">
+								<a asp-area="Admin" asp-controller="Order" asp-action="index" class="widget-view">
+									<div class="icon-area">
+										<i class="fa fa-store"></i>
+									</div>
+									<small class="text"> Hóa đơn </small>
+								</a>
+							</div>
+						}
+						else if (User.IsInRole(SD.Role_User_Indi))
+						{
+							<div class="widget-header me-3">
+								<a asp-area="Customer" asp-controller="Order" asp-action="index" class="widget-view">
+									<div class="icon-area">
+										<i class="fa fa-store"></i>
+									</div>
+									<small class="text"> Hóa đơn </small>
+								</a>
+							</div>
+						}
+						@if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCart) != null)
+						{
+							<div class="widget-header">
+								<a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="widget-view">
+									@{
+										var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCart);
+									}
+									<div class="icon-area">
+										<i class="fa fa-shopping-cart"></i>
+										<span class="notify">@count</span>
+									</div>
+									<small class="text"> Giỏ hàng </small>
+								</a>
+							</div>
+						}
+						else
+						{
+							<div class="widget-header">
+								<a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="widget-view">
+									<div class="icon-area">
+										<i class="fa fa-shopping-cart"></i>
+										<span class="notify">0</span>
+									</div>
+									<small class="text"> Giỏ hàng </small>
+								</a>
+							</div>
+						}
+						@await Html.PartialAsync("_LoginPartial")
+					</div>
+				</nav>
+				<nav class="navbar navbar-light navbar-expand-xl pt-0">
+					<img src="~/assets/img/sticker-fan_11674599_o.png" height="85px" class="position-absolute ps-4" />
+					<button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+						<span class="fa fa-bars text-primary"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<div class="navbar-nav mx-auto">
+							<a asp-area="Customer" asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
+							@await Component.InvokeAsync("MenuCategory")
+							@if (User.IsInRole(SD.Role_Admin))
+							{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle pe-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Quản lý nội dung
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Loại sản phẩm</a>
+									<a class="dropdown-item" asp-area="Admin" asp-controller="Brand" asp-action="Index">Thương hiệu</a>
+									<a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Sản phẩm</a>
+									<a class="dropdown-item" asp-area="Admin" asp-controller="Size" asp-action="Index">Kích thước</a>
+								</div>
+							</li>
+							}
+							@if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+								{
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle pe-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Quản lý người dùng
+										</a>
+										<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+											<a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Tài khoản người dùng</a>
+											<a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Nhà bán hàng</a>
+										</div>
+									</li>
+								}
+							<div class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle pe-4" data-bs-toggle="dropdown">Phụ kiện</a>
+								<div class="dropdown-menu m-0 bg-secondary rounded-0">
+									<a href="blog.html" class="dropdown-item">Our Blog</a>
+									<a href="team.html" class="dropdown-item">Our Team</a>
+									<a href="testimonial.html" class="dropdown-item">Testimonial</a>
+									<a href="404.html" class="dropdown-item">404 Page</a>
+								</div>
+							</div>
+							
+							<a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<!-- Navbar End -->
+	</header>
+	<div class="overflow-hidden">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+	<!-- Footer Start -->
+	<footer>
+		<div class="container-fluid bg-dark text-light">
+			<div class="row px-xl-5 pt-4">
+				<div class="col-lg-4 col-md-12 pr-3 pr-xl-5">
+					<a href="" class="text-decoration-none">
+						<h1 class="m-0 display-4 text-secondary"><span class="text-primary">Teddy</span>Store</h1>
+					</a>
+					<p>Cửa hàng gấu bông số một Việt Nam, nhiều mã giảm giá hôm nay. Mua ngay!</p>
+					<p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i> 123 Xuân Khánh, Ninh Kiều, Cần Thơ</p>
+					<p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i> info@gmail.com</p>
+					<p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i> 02933 003 754</p>
+				</div>
+				<div class="col-lg-8 col-md-12 mt-3">
+					<div class="row">
+						<div class="col-md-4 mt-5">
+							<h5 class="font-weight-bold text-light mb-4">Về chúng tôi</h5>
+							<div class="d-flex flex-column justify-content-start">
+								<a class="text-light mb-2" href="#">Di sản</a>
+								<a class="text-light mb-2" href="#">Công ty</a>
+								<a class="text-light" href="#">Cơ hội nghề nghiệp</a>
+							</div>
+						</div>
+						<div class="col-md-4 mt-5">
+							<h5 class="font-weight-bold text-light mb-4">Liên kết nhanh</h5>
+							<div class="d-flex flex-column justify-content-start">
+								<a class="text-light mb-2" href="/home">Trang chủ</a>
+								<a class="text-light mb-2" href="/product_all">Đặt hàng</a>
+								<a class="text-light" href="#">Liên hệ</a>
+							</div>
+						</div>
+						<div class="col-md-4 mt-5">
+							<img src="~/assets/img/check-footer.png" height="75px" alt="">
+							<div class="row">
+								<img src="~/assets/img/vnpost1.png" class="col-6" style="width:120px" alt="">
+								<img src="~/assets/img/ghn.png" class="col-6 p-0" style="width:120px" alt="">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row border-top border-light mx-xl-5 py-4">
+				<div class="col-md-6 px-xl-0">
+					<p class="mb-md-0 text-lg-left">
+						&copy; <a class="font-weight-semi-bold" href="#">Teddy Store</a>. Dự án Niên luận ngành Công nghệ thông tin.
+						Thiết kế và cài đặt bởi B2005780 Nguyễn Ngọc Trâm
+					</p>
+				</div>
+				<div class="col-md-6 px-xl-0 d-flex flex-row-reverse">
+					<img src="~/assets/img/paymenticon.png" height="30px" alt="">
+				</div>
+			</div>
+		</div>
+		<!-- Footer End -->
+	</footer>
+	<!-- jQuery -->
+	<script src="~/Assets/js/jquery-2.0.0.min.js" type="text/javascript"></script>
+
+	<!-- JavaScript Libraries -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/assets/wow/wow.min.js"></script>
+	<script src="~/assets/easing/easing.min.js"></script>
+	<script src="~/assets/waypoints/waypoints.min.js"></script>
+	<script src="~/assets/lightbox/js/lightbox.min.js"></script>
+	<script src="~/assets/owlcarousel/owl.carousel.min.js"></script>
+	<script type="text/javascript" src="~/Assets/js/toastr.min.js"></script>
+	<script src="~/Assets/js/sweetalert.min.js"></script>
+	<script src="~/Assets/js/jquery-ui.min.js"></script>
+	<script src="~/Assets/js/jquery.dataTables.min.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+
+	<!-- Template Javascript -->
+	<script src="~/js/main.js"></script>
+</body>
+</html>

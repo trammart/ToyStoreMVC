@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ToyStoreMVC.Models;
+@inject SignInManager<ApplicationUser> SignInManager
+
+@inject UserManager<ApplicationUser> _UserManager
+@if (SignInManager.IsSignedIn(User))
+{
+	var user = await _UserManager.GetUserAsync(User);
+	<div class="ms-4 justify-content-center">
+		<div class="nav-item dropdown" style="padding-top:6px;">
+			<a class="dropdown-toggle" style="padding-top:8px; padding-left:15px" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<img src="~/assets/img/@user.ImageUrl" class="img-fluid rounded-circle" alt="" style="width: 33px; height: 33px;">
+			</a>
+			<div class="dropdown-menu" style="min-width:8rem" aria-labelledby="navbarDropdown">
+				<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" class="widget-view">Tài khoản</a>
+				<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+					<button class="dropdown-item text-primary">Thoát</button>
+				</form>
+			</div>
+		</div>
+		<a><small class="text" style="color:deeppink">@user.Name</small></a>
+
+	</div>
+
+}
+else
+{
+	<div class="widget-header mr-3">
+		<a asp-area="Identity" asp-page="/Account/Register" class="widget-view">
+			<div class="icon-area">
+				<i class="fa fa-registered"></i>
+			</div>
+			<small class="text">Đăng ký</small>
+		</a>
+	</div>
+	<div class="widget-header mr-3">
+		<a asp-area="Identity" asp-page="/Account/Login" class="widget-view">
+			<div class="icon-area">
+				<i class="fa fa-user"></i>
+			</div>
+			<small class="text"> Đăng nhập </small>
+		</a>
+	</div>
+
+	@* <li class="nav-item class=" widget-view"">
+        <a class="widget-view" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
+        </li>
+        <li class="nav-item class=" widget-view"">
+        <a class="widget-view" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
+        </li>*@
+}

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewData["Title"] = "Quyền người dùng";
+    Layout = "_Layout.cshtml";
+    ViewData["ActivePage"] = ManageNavPages.Size;
+}
+
+<br />
+<div class="row">
+    <div class="col-10">
+        <h2 class="text-primary">Danh sách các quyền</h2>
+    </div>
+    <div class="col-2 text-right">
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="Role" asp-action="Add"><i class="fas fa-plus"></i> &nbsp; Tạo Mới</a>
+    </div>
+</div>
+
+<br />
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-info">
+                    <tr>
+                        <th class="text-center">Tên vai trò</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@role.Name</td>
+                            <td>
+                                <div class="text-center">
+                                    <a asp-area="Admin" asp-controller="Role" asp-action="Edit" asp-route-id="@role.Id" class="btn btn-success text-white" style="cursor:pointer">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-area="Admin" asp-controller="Role" asp-action="Delete" asp-route-id="@role.Id" class="btn btn-danger text-white" style="cursor:pointer">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+}
